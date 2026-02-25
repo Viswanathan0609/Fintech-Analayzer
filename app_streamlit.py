@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import joblib
-from preprocess import load_and_preprocess
+import os
+from preprocessing import load_and_preprocess
 from fraud_model import train_classical_model
 from quantum_model import train_quantum_model
 
@@ -24,12 +25,16 @@ if uploaded_file:
 
     st.subheader("Fraud Risk Prediction")
 
-    model = joblib.load("models/classical_model.pkl")
+    model_path = "models/classical_model.pkl"
+    if os.path.exists(model_path):
+        model = joblib.load(model_path)
 
-    sample = X_test[0:1]
-    prediction = model.predict(sample)
+        sample = X_test[0:1]
+        prediction = model.predict(sample)
 
-    if prediction[0] == 1:
-        st.error("⚠️ High Fraud Risk Transaction")
+        if prediction[0] == 1:
+            st.error("⚠️ High Fraud Risk Transaction")
+        else:
+            st.success("✅ Low Risk Transaction")
     else:
-        st.success("✅ Low Risk Transaction")
+        st.info("Please train the Classical Model first to enable prediction.")
