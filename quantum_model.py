@@ -1,9 +1,11 @@
-from qiskit.utils import algorithm_globals
+try:
+    from qiskit_aer import Aer
+except ImportError:
+    from qiskit import Aer
+from sklearn.metrics import accuracy_score
+from qiskit.circuit.library import ZZFeatureMap
 from qiskit_machine_learning.algorithms import QSVC
 from qiskit_machine_learning.kernels import QuantumKernel
-from qiskit.circuit.library import ZZFeatureMap
-from qiskit import Aer
-from sklearn.metrics import accuracy_score
 
 def train_quantum_model(X_train, X_test, y_train, y_test):
 
